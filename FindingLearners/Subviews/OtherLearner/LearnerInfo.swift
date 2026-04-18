@@ -1,0 +1,101 @@
+//
+//  LearnerInfo.swift
+//  FindingLearners
+//
+//  Created by YoonJung Kwak on 3/31/26.
+//
+
+import SwiftUI
+
+struct LearnerInfo: View {
+    var imageName: String
+    var learnerTopic: [String]
+    @State var message: String = ""
+    @Binding var isShowingInfo: Bool
+    @State private var showAlert = false
+    @State private var alertMessage: String = ""
+    @Binding var selectedTopics: [String]
+    
+    var body: some View {
+        VStack {
+            HStack {
+                Image(imageName)
+                    .resizable()
+                    .frame(width: 130, height: 130)
+                    .clipShape(Circle())
+                
+                Text(imageName)
+                    .font(.largeTitle)
+                    .padding(.bottom, 5)
+                    .padding(.trailing, 10)
+                    .frame(maxWidth: .infinity)
+                    .bold()
+            }
+            .padding(.bottom, 30)
+            .padding(.top, 20)
+            
+            FlowLayout {
+                ForEach(learnerTopic, id: \.self) { topic in
+                    if selectedTopics.contains(topic) {
+                        Text(topic)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .background(RoundedRectangle(cornerRadius: 20)
+                                .foregroundStyle(.accentLight)
+//                                .overlay(
+//                                    RoundedRectangle(cornerRadius: 20)
+//                                        .stroke(.white.opacity(0.4), lineWidth: 2)
+//                                )
+                            )
+                            .foregroundStyle(.white)
+                    }
+                    else {
+                        Text(topic)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .background(
+                                RoundedRectangle(cornerRadius: 20)
+                                    .fill(.regularMaterial)
+//                                    .overlay(
+//                                        RoundedRectangle(cornerRadius: 20)
+//                                            .stroke(.white.opacity(0.4), lineWidth: 2)
+//                                    )
+                            )
+                    }
+                }
+            }
+            .padding(.bottom, 20)
+            
+            TextField("러너에게 한 줄 메시지를 보내보세요!", text: $message, axis: .vertical)
+                .frame(maxHeight: .infinity)
+                .padding(15)
+                .background(RoundedRectangle(cornerRadius: 30)
+                    .foregroundStyle(.white))
+                .padding(.bottom, 15)
+            
+            Button("전송") {
+                if message != "" {
+                    alertMessage = "메시지 전송이 완료되었어요!"
+                    message = ""
+                }
+                else {
+                    alertMessage = "메시지가 입력되지 않았어요."
+                }
+                showAlert = true
+            }
+            .tint(.blue)
+            .buttonStyle(.glassProminent)
+            .alert(isPresented: $showAlert) {
+                Alert(title: Text(alertMessage))
+            }
+            
+            
+            Spacer()
+        }
+        .padding(30)
+    }
+}
+
+#Preview {
+    LearnerInfo(imageName: "test", learnerTopic: ["testtopic1", "test2", "testtes3", "testtt1", "test2", "testtes3"], isShowingInfo: .constant(true), selectedTopics: .constant([]))
+}

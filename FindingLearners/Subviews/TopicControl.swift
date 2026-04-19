@@ -6,17 +6,25 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct TopicControl: View {
-    @Binding var selectedTopics: [String]
+    @Query(filter: #Predicate<Learner> { $0.isCurrentUser == true }) var currentLearners: [Learner]
+    @Environment(\.modelContext) var context
+    
+    var myTopics: [String] {
+        currentLearners.first?.favTopics ?? []
+    }
+    
     @Binding var currentTopic: String
     
     var body: some View {
         TabView(selection: $currentTopic) {
-            ForEach(selectedTopics, id: \.self) { topic in
+            ForEach(myTopics, id: \.self) { topic in
                 Text(topic)
                     .font(Font.largeTitle.bold())
                     .foregroundStyle(.white)
+                    .tag(topic)
             }
         }
         .frame(width: 120, height: 160)
@@ -29,5 +37,5 @@ struct TopicControl: View {
 }
 
 #Preview {
-    TopicControl(selectedTopics: .constant(["1", "2", "3", "4", "5"]), currentTopic: .constant("1"))
+    TopicControl(currentTopic: .constant("1"))
 }

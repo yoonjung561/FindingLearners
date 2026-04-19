@@ -6,32 +6,37 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct SetTopicButton: View {
+    @Query(filter: #Predicate<Learner> { $0.isCurrentUser == true }) var currentLearners: [Learner]
+    var myTopics: [String] {
+        currentLearners.first?.favTopics ?? []
+    }
+    
     @Binding var showModal: Bool
-    @Binding var selectedTopics: [String]
     @Binding var currentTopic: String
     
     var body: some View {
-        Button(selectedTopics.isEmpty ? "내 관심사 설정하기" : "관심사 설정",
-               systemImage: selectedTopics.isEmpty ? "person.2.badge.gearshape.fill" : "gearshape.fill",
+        Button(myTopics.isEmpty ? "내 관심사 설정하기" : "관심사 설정",
+               systemImage: myTopics.isEmpty ? "person.2.badge.gearshape.fill" : "gearshape.fill",
             action: {
                 self.showModal = true
             })
             .font(.title3)
-            .tint(selectedTopics.isEmpty ? .accent : .accentLight)
+            .tint(myTopics.isEmpty ? .accent : .accentLight)
             .foregroundStyle(.white)
             .sheet(isPresented: self.$showModal)
         {
-            SetTopicView(selectedTopics: $selectedTopics, currentTopic: $currentTopic, showModal: $showModal)
+            SetTopicView(currentTopic: $currentTopic, showModal: $showModal)
                 .presentationDetents([.fraction(0.54)])
         }
         .buttonStyle(.glassProminent)
         .labelStyle(.titleAndIcon)
-        .padding(.leading, selectedTopics.isEmpty ? 0 : 10)
+        .padding(.leading, myTopics.isEmpty ? 0 : 10)
     }
 }
 
 #Preview {
-    SetTopicButton(showModal: .constant(false), selectedTopics: .constant([]), currentTopic: .constant(""))
+    SetTopicButton(showModal: .constant(false), currentTopic: .constant(""))
 }

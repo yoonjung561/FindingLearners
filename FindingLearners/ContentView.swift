@@ -6,19 +6,23 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
+    @Query(filter: #Predicate<Learner> { $0.isCurrentUser == true }) var currentLearners: [Learner]
+    var myTopics: [String] {
+        currentLearners.first?.favTopics ?? []
+    }
     
     @State var showTopicSetter: Bool = false
     @State var showTopicPicker: Bool = false
     @State var showProfile: Bool = false
-    @State var selectedTopics: [String] = []
     @State var currentTopic: String = ""
     
     var body: some View {
         NavigationView {
             ZStack{
-                ShowLearners(selectedTopics: $selectedTopics, currentTopic: $currentTopic)
+                ShowLearners(currentTopic: $currentTopic)
                     .padding(.bottom, 25)
                 
                 VStack {
@@ -43,23 +47,23 @@ struct ContentView: View {
                     
                     Spacer()
                     
-                    if !selectedTopics.isEmpty {
-                        TopicControl(selectedTopics: $selectedTopics, currentTopic: $currentTopic)
+                    if !myTopics.isEmpty {
+                        TopicControl(currentTopic: $currentTopic)
                             .padding(.bottom, 64)
                     }
                     
                     Spacer()
                         
                     HStack {
-                        SetTopicButton(showModal: $showTopicSetter, selectedTopics: $selectedTopics, currentTopic: $currentTopic)
+                        SetTopicButton(showModal: $showTopicSetter, currentTopic: $currentTopic)
                         
-                        if !selectedTopics.isEmpty {
-                            PickTopicButton(showTopicPicker: $showTopicPicker, selectedTopics: $selectedTopics, currentTopic: $currentTopic)
+                        if !myTopics.isEmpty {
+                            PickTopicButton(showTopicPicker: $showTopicPicker, currentTopic: $currentTopic)
                         }
                     }
                 }
                 
-                if selectedTopics.isEmpty {
+                if myTopics.isEmpty {
                     TopicEmptyMessage()
                 }
             }
@@ -69,4 +73,5 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
+        .modelContainer(SampleData.container)
 }

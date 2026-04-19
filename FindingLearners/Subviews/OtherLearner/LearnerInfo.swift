@@ -6,15 +6,20 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct LearnerInfo: View {
+    @Query(filter: #Predicate<Learner> { $0.isCurrentUser == true }) var currentLearners: [Learner]
+    var myTopics: [String] {
+        currentLearners.first?.favTopics ?? []
+    }
+    
     var imageName: String
     var learnerTopic: [String]
     @State var message: String = ""
     @Binding var isShowingInfo: Bool
     @State private var showAlert = false
     @State private var alertMessage: String = ""
-    @Binding var selectedTopics: [String]
     
     var body: some View {
         VStack {
@@ -36,16 +41,12 @@ struct LearnerInfo: View {
             
             FlowLayout {
                 ForEach(learnerTopic, id: \.self) { topic in
-                    if selectedTopics.contains(topic) {
+                    if myTopics.contains(topic) {
                         Text(topic)
                             .padding(.horizontal, 8)
                             .padding(.vertical, 4)
                             .background(RoundedRectangle(cornerRadius: 20)
                                 .foregroundStyle(.accentLight)
-//                                .overlay(
-//                                    RoundedRectangle(cornerRadius: 20)
-//                                        .stroke(.white.opacity(0.4), lineWidth: 2)
-//                                )
                             )
                             .foregroundStyle(.white)
                     }
@@ -56,10 +57,6 @@ struct LearnerInfo: View {
                             .background(
                                 RoundedRectangle(cornerRadius: 20)
                                     .fill(.regularMaterial)
-//                                    .overlay(
-//                                        RoundedRectangle(cornerRadius: 20)
-//                                            .stroke(.white.opacity(0.4), lineWidth: 2)
-//                                    )
                             )
                     }
                 }
@@ -97,5 +94,5 @@ struct LearnerInfo: View {
 }
 
 #Preview {
-    LearnerInfo(imageName: "test", learnerTopic: ["testtopic1", "test2", "testtes3", "testtt1", "test2", "testtes3"], isShowingInfo: .constant(true), selectedTopics: .constant([]))
+    LearnerInfo(imageName: "test", learnerTopic: ["testtopic1", "test2", "testtes3", "testtt1", "test2", "testtes3"], isShowingInfo: .constant(true))
 }

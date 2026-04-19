@@ -6,9 +6,14 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct SetTopicView: View {
-    @Binding var selectedTopics: [String]
+    @Query(filter: #Predicate<Learner> { $0.isCurrentUser == true }) var currentLearners: [Learner]
+    var myTopics: [String] {
+        currentLearners.first?.favTopics ?? []
+    }
+    
     @Binding var currentTopic: String
     @Binding var showModal: Bool
     @State var currentTopicIndex: Int = 0
@@ -50,7 +55,7 @@ struct SetTopicView: View {
                 .fill(.regularMaterial))
             .padding(.top)
             
-            SetTopics(selectedTopics: $selectedTopics, category: categories[currentTopicIndex].name, options: categories[currentTopicIndex].options)
+            SetTopics(category: categories[currentTopicIndex].name, options: categories[currentTopicIndex].options)
             
             Spacer()
             
@@ -75,7 +80,7 @@ struct SetTopicView: View {
                         currentTopicIndex += 1
                     }
                     else {
-                        currentTopic = selectedTopics.first ?? ""
+                        currentTopic = myTopics.first ?? ""
                         showModal = !showModal
                     }
                 } label: {
@@ -100,5 +105,5 @@ struct SetTopicView: View {
 }
 
 #Preview {
-    SetTopicView(selectedTopics: .constant([]), currentTopic: .constant(""), showModal: .constant(true))
+    SetTopicView(currentTopic: .constant(""), showModal: .constant(true))
 }

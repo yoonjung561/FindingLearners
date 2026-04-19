@@ -6,9 +6,14 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ShowLearners: View {
-    @Binding var selectedTopics: [String]
+    @Query(filter: #Predicate<Learner> { $0.isCurrentUser == true }) var currentLearners: [Learner]
+    var myTopics: [String] {
+        currentLearners.first?.favTopics ?? []
+    }
+    
     @Binding var currentTopic: String
     
     @State var learnersInfo: [String: [String]] = [
@@ -32,7 +37,7 @@ struct ShowLearners: View {
         RadialLayout {
             ForEach(Array(learnersInfo.keys), id: \.self) { learner in
                 if learnersInfo[learner]!.contains(currentTopic) {
-                    LearnerButton(imageName: learner, learnersInfo: $learnersInfo, selectedTopics: $selectedTopics)
+                    LearnerButton(imageName: learner, learnersInfo: $learnersInfo)
                 }
             }
         }
@@ -41,5 +46,5 @@ struct ShowLearners: View {
 }
 
 #Preview {
-    ShowLearners(selectedTopics: .constant(["option1"]), currentTopic: .constant("option1"))
+    ShowLearners(currentTopic: .constant("option1"))
 }

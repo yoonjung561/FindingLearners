@@ -6,15 +6,20 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct LearnerButton: View {
+    @Query(filter: #Predicate<Learner> { $0.isCurrentUser == true }) var currentLearners: [Learner]
+    var myTopics: [String] {
+        currentLearners.first?.favTopics ?? []
+    }
+    
     let imageName: String
     @Binding var learnersInfo: [String: [String]]
     @State var isShowingInfo: Bool = false
     var learnerTopic: [String] {
             learnersInfo[imageName] ?? []
     }
-    @Binding var selectedTopics: [String]
     
     var body: some View {
         
@@ -29,12 +34,12 @@ struct LearnerButton: View {
         .buttonStyle(.glass)
         .frame(width: 110, height: 110)
         .sheet(isPresented: $isShowingInfo) {
-            LearnerInfo(imageName: imageName, learnerTopic: learnersInfo[imageName]!, isShowingInfo: $isShowingInfo, selectedTopics: $selectedTopics)
+            LearnerInfo(imageName: imageName, learnerTopic: learnersInfo[imageName]!, isShowingInfo: $isShowingInfo)
                 .presentationDetents([.fraction(0.7), .large])
         }
     }
 }
 
 #Preview {
-    LearnerButton(imageName: "test", learnersInfo: .constant([:]), selectedTopics: .constant([]))
+    LearnerButton(imageName: "test", learnersInfo: .constant([:]))
 }

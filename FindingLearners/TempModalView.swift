@@ -6,9 +6,14 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct TempModalView : View {
-    @Binding var selectedTopics: [String]
+    @Query(filter: #Predicate<Learner> { $0.isCurrentUser == true }) var currentLearners: [Learner]
+    var myTopics: [String] {
+        currentLearners.first?.favTopics ?? []
+    }
+
     @Binding var currentTopic: String
     @Binding var showModal: Bool
     
@@ -44,24 +49,24 @@ struct TempModalView : View {
                         .foregroundStyle(.accent))
                     .padding(.top)
                     
-                    SetTopics(selectedTopics: $selectedTopics, category: "관심 분야", options: categoryAndOptions["Category1"] ?? [])
+                    SetTopics(category: "관심 분야", options: categoryAndOptions["Category1"] ?? [])
                     
-                    SetTopics(selectedTopics: $selectedTopics, category: "스포츠", options: categoryAndOptions["Category2"] ?? [])
+                    SetTopics(category: "스포츠", options: categoryAndOptions["Category2"] ?? [])
                     
-                    SetTopics(selectedTopics: $selectedTopics, category: "음악", options: categoryAndOptions["Category3"] ?? [])
+                    SetTopics(category: "음악", options: categoryAndOptions["Category3"] ?? [])
                     
-                    SetTopics(selectedTopics: $selectedTopics, category: "문화 생활", options: categoryAndOptions["Category4"] ?? [])
+                    SetTopics(category: "문화 생활", options: categoryAndOptions["Category4"] ?? [])
                     
-                    SetTopics(selectedTopics: $selectedTopics, category: "음식", options: categoryAndOptions["Category5"] ?? [])
+                    SetTopics(category: "음식", options: categoryAndOptions["Category5"] ?? [])
                     
-                    SetTopics(selectedTopics: $selectedTopics, category: "외국어", options: categoryAndOptions["Category6"] ?? [])
+                    SetTopics(category: "외국어", options: categoryAndOptions["Category6"] ?? [])
                     
-                    SetTopics(selectedTopics: $selectedTopics, category: "기타 취미", options: categoryAndOptions["Category7"] ?? [])
+                    SetTopics(category: "기타 취미", options: categoryAndOptions["Category7"] ?? [])
                     
                     
                     
                     VStack(alignment: .leading, spacing: 15) {
-                        if !selectedTopics.isEmpty{
+                        if !myTopics.isEmpty{
                             Divider()
                                 .padding(.top)
                             
@@ -69,7 +74,7 @@ struct TempModalView : View {
                                 .bold()
                         }
                         FlowLayout {
-                            ForEach(selectedTopics, id: \.self) { topic in
+                            ForEach(myTopics, id: \.self) { topic in
                                 Text(topic)
                                     .padding(.horizontal, 12)
                                     .padding(.vertical, 8)
@@ -83,7 +88,7 @@ struct TempModalView : View {
                     
                     Button("설정 완료") {
                         self.showModal = false
-                        currentTopic = selectedTopics.first ?? ""
+                        currentTopic = myTopics.first ?? ""
                     }
                     .font(.title3)
                     .buttonStyle(.borderedProminent)
@@ -93,6 +98,6 @@ struct TempModalView : View {
 }
 
 #Preview {
-    TempModalView(selectedTopics: .constant([]), currentTopic: .constant(""), showModal: .constant(true))
+    TempModalView(currentTopic: .constant(""), showModal: .constant(true))
 }
 

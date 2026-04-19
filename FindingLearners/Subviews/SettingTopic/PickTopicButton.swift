@@ -9,7 +9,6 @@ import SwiftUI
 
 struct PickTopicButton: View {
     @Binding var showTopicPicker: Bool
-    @Binding var selectedTopics: [String]
     @Binding var currentTopic: String
     
     var body: some View {
@@ -23,7 +22,7 @@ struct PickTopicButton: View {
             .foregroundStyle(.white)
             .sheet(isPresented: self.$showTopicPicker)
         {
-            TopicPicker(selectedTopics: $selectedTopics, currentTopic: $currentTopic)
+            TopicPicker(currentTopic: $currentTopic)
                 .presentationDetents([.fraction(0.54), .fraction(0.65)])
         }
         .buttonStyle(.glassProminent)
@@ -32,5 +31,5 @@ struct PickTopicButton: View {
 }
 
 #Preview {
-    PickTopicButton(showTopicPicker: .constant(true), selectedTopics: .constant([]), currentTopic: .constant(""))
+    PickTopicButton(showTopicPicker: .constant(true), currentTopic: .constant(""))
 }

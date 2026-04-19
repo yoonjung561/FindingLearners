@@ -6,9 +6,14 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct TopicPicker: View {
-    @Binding var selectedTopics: [String]
+    @Query(filter: #Predicate<Learner> { $0.isCurrentUser == true }) var currentLearners: [Learner]
+    var myTopics: [String] {
+        currentLearners.first?.favTopics ?? []
+    }
+    
     @Binding var currentTopic: String
     
     var body: some View {
@@ -33,7 +38,7 @@ struct TopicPicker: View {
             
             ScrollView {
                 FlowLayout {
-                    ForEach(selectedTopics, id: \.self) { topic in
+                    ForEach(myTopics, id: \.self) { topic in
                         Button(topic) {
                             currentTopic = topic
                         }
@@ -49,5 +54,5 @@ struct TopicPicker: View {
 }
 
 #Preview {
-    TopicPicker(selectedTopics: .constant(["개발", "기획", "야구",  "케이팝", "인디", "영화", "드라마", "독서", "DIY 공방", "한식", "양식", "고기", "디저트", "영어", "일본어", "회화 연습", "여행", "베이킹"]), currentTopic: .constant(""))
+    TopicPicker(currentTopic: .constant(""))
 }

@@ -6,9 +6,12 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct TopicButton: View {
-    @Binding var selectedTopics: [String]
+    @Query(filter: #Predicate<Learner> { $0.isCurrentUser == true })var currentLearners: [Learner]
+    @Environment(\.modelContext) var context
+    
     @State var isSelected: Bool
     let topic: String
     
@@ -16,11 +19,18 @@ struct TopicButton: View {
         Button(
             action: {
                 isSelected = !isSelected
+                
                 if isSelected {
-                    selectedTopics.append(topic)
+                    if currentLearners.isEmpty {
+                        let currentLearner = Learner(isCurrentUser: true, name: "", email: "", favTopics: [topic])
+                        context.insert(currentLearner)
+                    }
+                    else {
+                        currentLearners.first?.favTopics.append(topic)
+                    }
                 }
                 else {
-                    selectedTopics.removeAll(where: { $0 == topic })
+                    currentLearners.first?.favTopics.removeAll(where: { $0 == topic })
                 }
             }) {
                 Text(topic)

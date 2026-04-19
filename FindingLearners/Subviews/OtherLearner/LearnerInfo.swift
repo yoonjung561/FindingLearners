@@ -14,8 +14,7 @@ struct LearnerInfo: View {
         currentLearners.first?.favTopics ?? []
     }
     
-    var imageName: String
-    var learnerTopic: [String]
+    var learner: Learner
     @State var message: String = ""
     @Binding var isShowingInfo: Bool
     @State private var showAlert = false
@@ -24,12 +23,12 @@ struct LearnerInfo: View {
     var body: some View {
         VStack {
             HStack {
-                Image(imageName)
+                Image(learner.name)
                     .resizable()
                     .frame(width: 130, height: 130)
                     .clipShape(Circle())
                 
-                Text(imageName)
+                Text(learner.name)
                     .font(.largeTitle)
                     .padding(.bottom, 5)
                     .padding(.trailing, 10)
@@ -40,7 +39,7 @@ struct LearnerInfo: View {
             .padding(.top, 20)
             
             FlowLayout {
-                ForEach(learnerTopic, id: \.self) { topic in
+                ForEach(learner.favTopics, id: \.self) { topic in
                     if myTopics.contains(topic) {
                         Text(topic)
                             .padding(.horizontal, 8)
@@ -94,5 +93,5 @@ struct LearnerInfo: View {
 }
 
 #Preview {
-    LearnerInfo(imageName: "test", learnerTopic: ["testtopic1", "test2", "testtes3", "testtt1", "test2", "testtes3"], isShowingInfo: .constant(true))
+    LearnerInfo(learner: Learner(isCurrentUser: false, name: "TEST", email: "test@pos.idserve.net", favTopics: []), isShowingInfo: .constant(true))
 }

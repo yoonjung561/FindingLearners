@@ -14,12 +14,13 @@ struct LearnerButton: View {
         currentLearners.first?.favTopics ?? []
     }
     
-    let imageName: String
-    @Binding var learnersInfo: [String: [String]]
+    let learner: Learner
+//    let imageName: String // 지울 것
+//    @Binding var learnersInfo: [String: [String]] // 지울 것
     @State var isShowingInfo: Bool = false
-    var learnerTopic: [String] {
-            learnersInfo[imageName] ?? []
-    }
+//    var learnerTopics: [String] {
+//            learnersInfo[imageName] ?? []
+//    }
     
     var body: some View {
         
@@ -27,19 +28,19 @@ struct LearnerButton: View {
             isShowingInfo.toggle()
         }
         label: {
-            Image(imageName)
+            Image(learner.name)
                 .resizable()
                 .clipShape(Circle())
         }
         .buttonStyle(.glass)
         .frame(width: 110, height: 110)
         .sheet(isPresented: $isShowingInfo) {
-            LearnerInfo(imageName: imageName, learnerTopic: learnersInfo[imageName]!, isShowingInfo: $isShowingInfo)
+            LearnerInfo(learner: learner, isShowingInfo: $isShowingInfo)
                 .presentationDetents([.fraction(0.7), .large])
         }
     }
 }
 
 #Preview {
-    LearnerButton(imageName: "test", learnersInfo: .constant([:]))
+    LearnerButton(learner: Learner(isCurrentUser: false, name: "TEST", email: "test@pos.idserve.net", favTopics: []))
 }

@@ -15,12 +15,7 @@ struct LearnerButton: View {
     }
     
     let learner: Learner
-//    let imageName: String // 지울 것
-//    @Binding var learnersInfo: [String: [String]] // 지울 것
     @State var isShowingInfo: Bool = false
-//    var learnerTopics: [String] {
-//            learnersInfo[imageName] ?? []
-//    }
     
     var body: some View {
         

@@ -6,14 +6,23 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct MessageView: View {
-    enum MessageCategory: String, CaseIterable, Identifiable {
-        case incoming, outgoing
-        var id: Self { self }
+    @Query(filter: #Predicate<Learner> { $0.isCurrentUser == true }) var currentLearners: [Learner]
+    @Query var allMessages: [Message]
+    
+    var filteredMessages: [Message] {
+        guard let myEmail = currentLearners.first?.email else { return [] }
+        
+        if messageCategory == .incoming {
+            return allMessages.filter { $0.recipient.email == myEmail }
+        } else {
+            return allMessages.filter { $0.sender.email == myEmail }
+        }
     }
     
-    @State private var messageCategory: MessageCategory = .incoming
+    @State var messageCategory: MessageCategory = .incoming
     
     var body: some View {
         VStack {
@@ -24,8 +33,11 @@ struct MessageView: View {
             .pickerStyle(.segmented)
             
             List {
-                
+                ForEach(filteredMessages) { message in
+                    MessageListItem(message: message, messageCategory: $messageCategory)
+                }
             }
+            .listStyle(.plain)
             
             Spacer()
         }

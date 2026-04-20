@@ -9,7 +9,8 @@ import SwiftUI
 import PhotosUI
 
 struct ProfileView: View {
-    @State var selectedItems: [PhotosPickerItem] = []
+    @State private var imageData: Data?
+    @State private var newImage: PhotosPickerItem?
     @State var nickname: String = ""
     @State var email: String = ""
     @Binding var showProfile: Bool
@@ -21,25 +22,8 @@ struct ProfileView: View {
                 .padding(.bottom, 100)
                 .padding(.top, 36)
             
-            PhotosPicker(selection: $selectedItems,
-                         maxSelectionCount: 1,
-                         matching: .images) {
-                Label("FrofileImage", systemImage: "photo.badge.plus")
-                    .labelStyle(.iconOnly)
-                    .font(.system(size: 30))
-                    .foregroundStyle(.white)
-                    .frame(width: 150, height: 150)
-                    .background(.accentLight)
-                    .clipShape(Circle())
-            }
-                         .padding(.bottom, 70)
-
-            //이미지 선택 테스트용
-            ForEach(selectedItems, id: \.self) { item in
-                Text("선택됨: \(String(describing: item))")
-                    .font(.caption)
-                    .lineLimit(1)
-            }
+            photoPicker
+                .padding(.bottom, 70)
             
             VStack(alignment: .leading) {
                 Text("Academy Nickname")
@@ -71,6 +55,31 @@ struct ProfileView: View {
             .tint(.accent)
         }
         .padding(.horizontal, 30)
+    }
+    
+    private var photoPicker: some View {
+        PhotosPicker(selection: $newImage) {
+            Group {
+                if let imageData, let uiImage = UIImage(data: imageData) {
+                    Image(uiImage: uiImage)
+                        .resizable()
+                } else {
+                    Image(systemName: "photo.badge.plus")
+                        .font(.largeTitle)
+                        .foregroundStyle(.white)
+                        .frame(maxWidth: 150, maxHeight: 150)
+                        .background(.secondary)
+                }
+            }
+            .frame(width: 150, height: 150)
+            .clipShape(Circle())
+        }
+        .onChange(of: newImage) {
+            guard let newImage else { return }
+            Task {
+                imageData = try await newImage.loadTransferable(type: Data.self)
+            }
+        }
     }
 }
 

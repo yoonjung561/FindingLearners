@@ -15,7 +15,7 @@ struct SampleData {
     static let container: ModelContainer = {
         do {
             let config = ModelConfiguration(isStoredInMemoryOnly: true)
-            let container = try ModelContainer(for: Learner.self, configurations: config)
+            let container = try ModelContainer(for: Learner.self, Message.self, configurations: config)
             
             let context = container.mainContext
             
@@ -37,7 +37,8 @@ struct SampleData {
                 "YUNA": ["기획", "서핑", "케이팝", "재즈", "드라마", "독서", "일식", "해산물", "중국어", "회화 연습", "사진", "베이킹", "러닝"]
             ]
             
-            // DB 삽입
+            var createdLearners: [String: Learner] = [:]
+            
             for (name, topics) in learnersInfo {
                 let isMe = (name == "ELLIE")
                 let learner = Learner(
@@ -47,6 +48,28 @@ struct SampleData {
                     favTopics: topics
                 )
                 context.insert(learner)
+                createdLearners[name] = learner
+            }
+            
+            if let ellie = createdLearners["ELLIE"],
+               let jake = createdLearners["JAKE"],
+               let sophia = createdLearners["SOPHIA"],
+               let ryan = createdLearners["RYAN"] {
+                
+                let messages = [
+                    // ELLIE가 받은 메시지 (Incoming)
+                    Message(sender: jake, recipient: ellie, message: "안녕하세요 엘리! SwiftUI 관련해서 궁금한 게 있어요."),
+                    Message(sender: sophia, recipient: ellie, message: "아카데미 근처 양식 맛집을 찾았어요! 같이 가실래요?"),
+                    Message(sender: ryan, recipient: ellie, message: "이번 주말에 같이 야구 보러 가요!!"),
+                    
+                    // ELLIE가 보낸 메시지 (Outgoing)
+                    Message(sender: ellie, recipient: jake, message: "제일 좋아하는 영화가 뭔지 궁금해요!"),
+                    Message(sender: ellie, recipient: sophia, message: "다음 브릿지 때 경주 여행 가실래요?")
+                ]
+                
+                for msg in messages {
+                    context.insert(msg)
+                }
             }
             
             return container

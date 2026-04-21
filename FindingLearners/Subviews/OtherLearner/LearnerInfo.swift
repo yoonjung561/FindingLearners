@@ -10,6 +10,7 @@ import SwiftData
 
 struct LearnerInfo: View {
     @Query(filter: #Predicate<Learner> { $0.isCurrentUser == true }) var currentLearners: [Learner]
+    @Environment(\.modelContext) var context
     var myTopics: [String] {
         currentLearners.first?.favTopics ?? []
     }
@@ -70,6 +71,9 @@ struct LearnerInfo: View {
             
             Button("전송") {
                 if message != "" {
+                    let newMessage = Message(sender: currentLearners.first!, recipient: learner, message: message)
+                    context.insert(newMessage)
+                    
                     alertMessage = "메시지 전송이 완료되었어요!"
                     message = ""
                 }

@@ -9,13 +9,30 @@ import Foundation
 import SwiftData
 import UIKit
 
-@Model
-class Learner {
+struct LearnerData: Decodable {
     var isCurrentUser: Bool
     var name: String
     var email: String
     var favTopics: [String]
     var imageData: Data?
+}
+
+@Model
+class Learner {
+    var id = UUID()
+    var isCurrentUser: Bool
+    var name: String
+    var email: String
+    var favTopics: [String]
+    var imageData: Data?
+    
+    init(fromStruct learner: LearnerData) {
+        self.isCurrentUser = learner.isCurrentUser
+        self.name = learner.name
+        self.email = learner.email
+        self.favTopics = learner.favTopics
+        self.imageData = learner.imageData
+    }
     
     init(isCurrentUser: Bool, name: String, email: String, favTopics: [String], imageData: Data? = nil) {
         self.isCurrentUser = isCurrentUser

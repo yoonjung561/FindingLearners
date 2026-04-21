@@ -10,12 +10,34 @@ import SwiftData
 
 struct SuperContentView: View {
     @Query(filter: #Predicate<Learner> { $0.isCurrentUser == true }) var currentLearners: [Learner]
+    @Environment(\.modelContext) var context
     var myTopics: [String] {
         currentLearners.first?.favTopics ?? []
     }
+    let apiClient = APIClient()
     
     var body: some View {
-        ContentView(myTopics: myTopics, currentTopic: currentLearners[0].favTopics[0])
+        ContentView(myTopics: myTopics, currentTopic: myTopics.first ?? "")
+            .task {
+                let learnerDatas = try? await apiClient.request(urlString: "URL", type: [LearnerData].self)
+                let messageDatas = try? await apiClient.request(urlString: "URL", type: [MessageData].self)
+                
+                if let checkedLearnerDatas = learnerDatas {
+                    for learnerData in checkedLearnerDatas {
+                        let newLearnerData = Learner(fromStruct: learnerData)
+                        context.insert(newLearnerData)
+                    }
+                    
+                }
+                
+                if let checkedMessageDatas = messageDatas {
+                    for messageData in checkedMessageDatas {
+                        let newMessageData = Message(fromStruct: messageData)
+                        context.insert(newMessageData)
+                    }
+                    
+                }
+            }
     }
 }
 

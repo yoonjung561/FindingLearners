@@ -1,0 +1,109 @@
+[
+  {
+    "isCurrentUser": true,
+    "name": "ELLIE",
+    "email": "yookwak26@pos.idserve.net",
+    "favTopics": ["개발", "기획", "야구", "케이팝", "인디", "영화", "드라마", "독서", "DIY 공방", "한식", "양식", "고기", "디저트", "영어", "일본어", "회화 연습", "여행", "베이킹"],
+    "imageData": null
+  },
+  {
+    "isCurrentUser": false,
+    "name": "JAKE",
+    "email": "jake26@pos.idserve.net",
+    "favTopics": ["개발", "디자인", "러닝", "팝송", "영화", "일식", "영어", "게임", "재테크"],
+    "imageData": null
+  },
+  {
+    "isCurrentUser": false,
+    "name": "SOPHIA",
+    "email": "sophia26@pos.idserve.net",
+    "favTopics": ["기획", "필라테스", "러닝", "요가", "케이팝", "전시", "뮤지컬", "양식", "비건", "프랑스어", "여행", "패션", "코스메틱"],
+    "imageData": null
+  },
+  {
+    "isCurrentUser": false,
+    "name": "RYAN",
+    "email": "ryan26@pos.idserve.net",
+    "favTopics": ["비지니스", "축구", "농구", "야구", "힙합", "R&B", "영화", "고기", "중식", "영어", "게임", "캠핑"],
+    "imageData": null
+  },
+  {
+    "isCurrentUser": false,
+    "name": "LINA",
+    "email": "lina26@pos.idserve.net",
+    "favTopics": ["디자인", "수영", "테니스", "인디", "발라드", "독서", "연극", "디저트", "일본어", "회화 연습", "여행", "사진"],
+    "imageData": null
+  },
+  {
+    "isCurrentUser": false,
+    "name": "MARK",
+    "email": "mark26@pos.idserve.net",
+    "favTopics": ["개발", "러닝", "배드민턴", "밴드", "페스티벌", "한식", "고기", "언어 자격증", "영어", "독일어", "재테크", "요리"],
+    "imageData": null
+  },
+  {
+    "isCurrentUser": false,
+    "name": "CHLOE",
+    "email": "chloe26@pos.idserve.net",
+    "favTopics": ["기획", "비지니스", "서핑", "팝송", "클래식", "전시", "콘서트", "해산물", "이탈리아어", "디저트", "수집", "여행"],
+    "imageData": null
+  },
+  {
+    "isCurrentUser": false,
+    "name": "NOAH",
+    "email": "noah26@pos.idserve.net",
+    "favTopics": ["개발", "축구", "야구", "힙합", "영화", "분식", "고기", "영어", "게임", "캠핑"],
+    "imageData": null
+  },
+  {
+    "isCurrentUser": false,
+    "name": "EMMA",
+    "email": "emma26@pos.idserve.net",
+    "favTopics": ["개발", "디자인", "요가", "케이팝", "재즈", "뮤지컬", "드라마", "디저트", "비건", "프랑스어", "회화 연습", "패션", "베이킹"],
+    "imageData": null
+  },
+  {
+    "isCurrentUser": false,
+    "name": "LUCAS",
+    "email": "lucas26@pos.idserve.net",
+    "favTopics": ["개발", "테니스", "러닝", "팝송", "영화", "일식", "해산물", "독일어", "언어 자격증", "여행", "사진"],
+    "imageData": null
+  },
+  {
+    "isCurrentUser": false,
+    "name": "MIA",
+    "email": "mia26@pos.idserve.net",
+    "favTopics": ["기획", "필라테스", "케이팝", "발라드", "독서", "DIY 공방", "한식", "분식", "중국어", "요리", "코스메틱"],
+    "imageData": null
+  },
+  {
+    "isCurrentUser": false,
+    "name": "IAN",
+    "email": "ian26@pos.idserve.net",
+    "favTopics": ["비지니스", "농구", "수영", "R&B", "밴드", "콘서트", "DIY 공방", "중식", "고기", "영어", "재테크", "수집"],
+    "imageData": null
+  },
+  {
+    "isCurrentUser": false,
+    "name": "ZOE",
+    "email": "zoe26@pos.idserve.net",
+    "favTopics": ["개발", "배드민턴", "클래식", "연극", "페스티벌", "양식", "디저트", "일본어", "이탈리아어", "케이팝", "회화 연습", "패션", "여행"],
+    "imageData": null
+  },
+  {
+    "isCurrentUser": false,
+    "name": "ALEX",
+    "email": "alex26@pos.idserve.net",
+    "favTopics": ["디자인", "축구", "러닝", "인디", "영화", "전시", "고기", "분식", "영어", "게임", "캠핑"],
+    "imageData": null
+  },
+  {
+    "isCurrentUser": false,
+    "name": "YUNA",
+    "email": "yuna26@pos.idserve.net",
+    "favTopics": ["기획", "서핑", "케이팝", "재즈", "드라마", "독서", "일식", "해산물", "중국어", "회화 연습", "사진", "베이킹", "러닝"],
+    "imageData": null
+  }
+]
+ 
+ 

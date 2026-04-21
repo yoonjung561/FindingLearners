@@ -1,6 +1,6 @@
 [
   {
-    "isCurrentUser": false,
+    "isCurrentUser": true,
     "name": "ELLIE",
     "email": "yookwak26@pos.idserve.net",
     "favTopics": ["개발", "기획", "야구", "케이팝", "인디", "영화", "드라마", "독서", "DIY 공방", "한식", "양식", "고기", "디저트", "영어", "일본어", "회화 연습", "여행", "베이킹"],

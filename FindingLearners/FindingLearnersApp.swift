@@ -12,7 +12,7 @@ import SwiftData
 struct FindingLearnersApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            SuperContentView()
         }
         .modelContainer(for: Learner.self)
     }

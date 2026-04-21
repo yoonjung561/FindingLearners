@@ -8,16 +8,28 @@
 import SwiftUI
 import SwiftData
 
-struct ContentView: View {
+struct SuperContentView: View {
     @Query(filter: #Predicate<Learner> { $0.isCurrentUser == true }) var currentLearners: [Learner]
     var myTopics: [String] {
         currentLearners.first?.favTopics ?? []
     }
     
+    var body: some View {
+        ContentView(myTopics: myTopics, currentTopic: currentLearners[0].favTopics[0])
+    }
+}
+
+struct ContentView: View {
     @State var showTopicSetter: Bool = false
     @State var showTopicPicker: Bool = false
     @State var showProfile: Bool = false
-    @State var currentTopic: String = ""
+    @State var currentTopic: String
+    var myTopics: [String]
+    
+    init(myTopics: [String], currentTopic: String) {
+        self.myTopics = myTopics
+        self.currentTopic = currentTopic
+    }
     
     var body: some View {
         NavigationView {
@@ -71,7 +83,12 @@ struct ContentView: View {
     }
 }
 
+//#Preview {
+//    ContentView()
+//        .modelContainer(SampleData.container)
+//}
+
 #Preview {
-    ContentView()
+    SuperContentView()
         .modelContainer(SampleData.container)
 }

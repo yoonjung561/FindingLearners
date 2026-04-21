@@ -63,7 +63,6 @@ struct LearnerInfo: View {
             .padding(.bottom, 20)
             
             TextField("러너에게 한 줄 메시지를 보내보세요!", text: $message, axis: .vertical)
-                .frame(maxHeight: .infinity)
                 .padding(15)
                 .background(RoundedRectangle(cornerRadius: 30)
                     .foregroundStyle(.white))

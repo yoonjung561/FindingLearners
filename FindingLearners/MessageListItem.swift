@@ -42,6 +42,7 @@ struct MessageListItem: View {
                     showDetail.toggle()
                 }
                 .labelStyle(.iconOnly)
+                .animation(.default, value: showDetail)
             }
             .padding(4)
             .padding(.bottom, 12)

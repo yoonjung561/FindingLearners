@@ -11,6 +11,7 @@ import SwiftData
 struct MessageView: View {
     @Query(filter: #Predicate<Learner> { $0.isCurrentUser == true }) var currentLearners: [Learner]
     @Query var allMessages: [Message]
+    @Environment(\.modelContext) var context
     
     var filteredMessages: [Message] {
         guard let myEmail = currentLearners.first?.email else { return [] }
@@ -35,6 +36,13 @@ struct MessageView: View {
             List {
                 ForEach(filteredMessages) { message in
                     MessageListItem(message: message, messageCategory: $messageCategory)
+                        .swipeActions(edge: .trailing) {
+                            Button("삭제", systemImage: "trash") {
+                                context.delete(message)
+                                try? context.save()
+                            }
+                            .tint(.red)
+                        }
                 }
             }
             .listStyle(.plain)

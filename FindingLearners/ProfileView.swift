@@ -7,8 +7,12 @@
 
 import SwiftUI
 import PhotosUI
+import SwiftData
 
 struct ProfileView: View {
+    @Query(filter: #Predicate<Learner> { $0.isCurrentUser == true }) var currentLearners: [Learner]
+    @Environment(\.modelContext) var context
+    
     @State private var imageData: Data?
     @State private var newImage: PhotosPickerItem?
     @State var nickname: String = ""
@@ -46,7 +50,14 @@ struct ProfileView: View {
             Spacer()
             
             Button("프로필 저장") {
-                //save data
+                if let currentLearner = currentLearners.first {
+                    currentLearner.name = nickname
+                    currentLearner.email = email
+                    currentLearner.imageData = imageData
+                } else {
+                    let currentLearner = Learner(isCurrentUser: true, name: nickname, email: email, favTopics: [], imageData: imageData)
+                    context.insert(currentLearner)
+                }
                 
                 self.showProfile = false
             }
@@ -55,6 +66,13 @@ struct ProfileView: View {
             .tint(.accent)
         }
         .padding(.horizontal, 30)
+        .onAppear {
+            if let currentLearner = currentLearners.first {
+                self.nickname = currentLearner.name
+                self.email = currentLearner.email
+                self.imageData = currentLearner.imageData
+            }
+        }
     }
     
     private var photoPicker: some View {

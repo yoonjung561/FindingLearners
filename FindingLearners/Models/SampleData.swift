@@ -44,7 +44,7 @@ struct SampleData {
                 let learner = Learner(
                     isCurrentUser: isMe,
                     name: name,
-                    email: "\(name.lowercased())@example.com",
+                    email: "\(name.lowercased())@pos.idserve.net",
                     favTopics: topics
                 )
                 context.insert(learner)

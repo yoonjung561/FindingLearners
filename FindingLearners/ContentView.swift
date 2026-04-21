@@ -19,8 +19,10 @@ struct SuperContentView: View {
     var body: some View {
         ContentView(myTopics: myTopics, currentTopic: myTopics.first ?? "")
             .task {
-                let learnerDatas = try? await apiClient.request(urlString: "URL", type: [LearnerData].self)
-                let messageDatas = try? await apiClient.request(urlString: "URL", type: [MessageData].self)
+                guard currentLearners.isEmpty else { return }
+                
+                let learnerDatas = try? await apiClient.request(urlString: "https://raw.githubusercontent.com/yoonjung561/FindingLearners/refs/heads/main/MockData/learnerData.json", type: [LearnerData].self)
+                let messageDatas = try? await apiClient.request(urlString: "https://raw.githubusercontent.com/yoonjung561/FindingLearners/refs/heads/main/MockData/messageData.json", type: [MessageData].self)
                 
                 if let checkedLearnerDatas = learnerDatas {
                     for learnerData in checkedLearnerDatas {

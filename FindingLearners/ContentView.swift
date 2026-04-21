@@ -21,23 +21,25 @@ struct SuperContentView: View {
             .task {
                 guard currentLearners.isEmpty else { return }
                 
-                let learnerDatas = try? await apiClient.request(urlString: "https://raw.githubusercontent.com/yoonjung561/FindingLearners/refs/heads/main/MockData/learnerData.json", type: [LearnerData].self)
-                let messageDatas = try? await apiClient.request(urlString: "https://raw.githubusercontent.com/yoonjung561/FindingLearners/refs/heads/main/MockData/messageData.json", type: [MessageData].self)
-                
-                if let checkedLearnerDatas = learnerDatas {
-                    for learnerData in checkedLearnerDatas {
+                do {
+                    let learnerDatas = try await apiClient.request(urlString: "https://raw.githubusercontent.com/yoonjung561/FindingLearners/refs/heads/main/MockData/learnerData.json", type: [LearnerData].self)
+                    
+                    for learnerData in learnerDatas {
                         let newLearnerData = Learner(fromStruct: learnerData)
                         context.insert(newLearnerData)
                     }
+                    try context.save()
                     
-                }
-                
-                if let checkedMessageDatas = messageDatas {
-                    for messageData in checkedMessageDatas {
+                    let messageDatas = try await apiClient.request(urlString: "https://raw.githubusercontent.com/yoonjung561/FindingLearners/refs/heads/main/MockData/messageData.json", type: [MessageData].self)
+                    
+                    for messageData in messageDatas {
                         let newMessageData = Message(fromStruct: messageData)
                         context.insert(newMessageData)
                     }
+                    try context.save()
                     
+                } catch {
+                    print("에러 발생: \(error)")
                 }
             }
     }

@@ -14,6 +14,6 @@ struct FindingLearnersApp: App {
         WindowGroup {
             SuperContentView()
         }
-        .modelContainer(for: Learner.self)
+        .modelContainer(for: [Learner.self, Message.self])
     }
 }

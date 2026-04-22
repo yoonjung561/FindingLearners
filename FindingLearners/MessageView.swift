@@ -15,12 +15,12 @@ struct MessageView: View {
     @Environment(\.modelContext) var context
     
     var filteredMessages: [Message] {
-        guard let myEmail = currentLearners.first?.email else { return [] }
+        guard let myId = currentLearners.first?.id else { return [] }
         
         if messageCategory == .incoming {
-            return allMessages.filter { $0.recipient.email == myEmail }
+            return allMessages.filter { $0.recipient.id == myId }
         } else {
-            return allMessages.filter { $0.sender.email == myEmail }
+            return allMessages.filter { $0.sender.id == myId }
         }
     }
     

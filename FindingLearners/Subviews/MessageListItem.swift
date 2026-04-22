@@ -16,9 +16,8 @@ struct MessageListItem: View {
     var body: some View {
         VStack(alignment: .leading) {
             HStack {
-                Image(systemName: "photo")
-                    .font(.largeTitle)
-                    .foregroundStyle(.white)
+                Image(messageCategory == .incoming ? message.sender.name : message.recipient.name)
+                    .resizable()
                     .frame(maxWidth: 68, maxHeight: 68)
                     .background(.accentLight)
                     .clipShape(Circle())

@@ -10,6 +10,7 @@ import SwiftData
 
 struct MessageView: View {
     @Query(filter: #Predicate<Learner> { $0.isCurrentUser == true }) var currentLearners: [Learner]
+    @Query(filter: #Predicate<Learner> { $0.isCurrentUser == false }) var otherLearners: [Learner]
     @Query var allMessages: [Message]
     @Environment(\.modelContext) var context
     
@@ -33,23 +34,52 @@ struct MessageView: View {
             }
             .pickerStyle(.segmented)
             
-            List {
-                ForEach(filteredMessages) { message in
-                    MessageListItem(message: message, messageCategory: $messageCategory)
-                        .swipeActions(edge: .trailing) {
-                            Button("삭제", systemImage: "trash") {
-                                context.delete(message)
-                                try? context.save()
-                            }
-                            .tint(.red)
-                        }
+            ZStack {
+                 if filteredMessages.isEmpty {
+                    VStack {
+                        Text("아직 메시지 기록이 없어요.")
+                            .font(.title3)
+                            .bold()
+                            .foregroundStyle(.textgray)
+                            .padding(.bottom, 4)
+                        Text("같은 관심사를 가진 러너들과")
+                            .font(.headline)
+                            .fontWeight(.regular)
+                            .foregroundStyle(.textgray)
+                        Text("소통을 시작해보세요!")
+                            .font(.headline)
+                            .fontWeight(.regular)
+                            .foregroundStyle(.textgray)
+                    }
                 }
+                List {
+                    ForEach(filteredMessages) { message in
+                        MessageListItem(message: message, messageCategory: $messageCategory)
+                            .swipeActions(edge: .trailing) {
+                                Button("삭제", systemImage: "trash") {
+                                    context.delete(message)
+                                    try? context.save()
+                                }
+                                .tint(.red)
+                            }
+                    }
+                }
+                .listStyle(.plain)
             }
-            .listStyle(.plain)
             
             Spacer()
         }
         .padding()
+        .task {
+            guard (messageCategory == .incoming && filteredMessages.isEmpty) else { return }
+            
+            if let currentLearner = currentLearners.first {
+                let newMessage1 = Message(sender: otherLearners.first(where: { $0.name == "CHLOE" })!, recipient: currentLearner, message: "다음 달에 서핑 원데이 클래스를 들어보려 하는데, 혹시 함께하실래요?")
+                let newMessage2 = Message(sender: otherLearners.first(where: { $0.name == "LUCAS" })!, recipient: currentLearner, message: "주말에 러너들이랑 경주에 출사 가실래요?!")
+                context.insert(newMessage1)
+                context.insert(newMessage2)
+            }
+        }
     }
 }
 

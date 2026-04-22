@@ -30,13 +30,13 @@ struct SuperContentView: View {
                     }
                     try context.save()
                     
-                    let messageDatas = try await apiClient.request(urlString: "https://raw.githubusercontent.com/yoonjung561/FindingLearners/refs/heads/main/MockData/messageData.json", type: [MessageData].self)
-                    
-                    for messageData in messageDatas {
-                        let newMessageData = Message(fromStruct: messageData)
-                        context.insert(newMessageData)
-                    }
-                    try context.save()
+//                    let messageDatas = try await apiClient.request(urlString: "https://raw.githubusercontent.com/yoonjung561/FindingLearners/refs/heads/main/MockData/messageData.json", type: [MessageData].self)
+//                    
+//                    for messageData in messageDatas {
+//                        let newMessageData = Message(fromStruct: messageData)
+//                        context.insert(newMessageData)
+//                    }
+//                    try context.save()
                     
                 } catch {
                     print("에러 발생: \(error)")

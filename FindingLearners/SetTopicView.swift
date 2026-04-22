@@ -59,46 +59,51 @@ struct SetTopicView: View {
             
             Spacer()
             
-            HStack {
-                if currentTopicIndex != 0 {
+            ZStack(alignment: .center) {
+                Text("\(currentTopicIndex + 1) / 7")
+                    .foregroundStyle(.secondary)
+                
+                HStack {
+                    if currentTopicIndex != 0 {
+                        Button {
+                            currentTopicIndex -= 1
+                        } label: {
+                            HStack {
+                                Image(systemName: "chevron.backward")
+                                Text("이전")
+                            }
+                        }
+                        .buttonStyle(.glassProminent)
+                        .tint(.accent)
+                    }
+                    
+                    Spacer()
+                    
                     Button {
-                        currentTopicIndex -= 1
+                        if currentTopicIndex < 6 {
+                            currentTopicIndex += 1
+                        }
+                        else {
+                            currentTopic = myTopics.first ?? ""
+                            showModal = !showModal
+                        }
                     } label: {
                         HStack {
-                            Image(systemName: "chevron.backward")
-                            Text("이전")
+                            if currentTopicIndex < 6 {
+                                Text("다음")
+                                Image(systemName: "chevron.forward")
+                            }
+                            else {
+                                Text("설정 완료")
+                                Image(systemName: "checkmark")
+                            }
                         }
                     }
                     .buttonStyle(.glassProminent)
                     .tint(.accent)
                 }
-                
-                Spacer()
-                
-                Button {
-                    if currentTopicIndex < 6 {
-                        currentTopicIndex += 1
-                    }
-                    else {
-                        currentTopic = myTopics.first ?? ""
-                        showModal = !showModal
-                    }
-                } label: {
-                    HStack {
-                        if currentTopicIndex < 6 {
-                            Text("다음")
-                            Image(systemName: "chevron.forward")
-                        }
-                        else {
-                            Text("설정 완료")
-                            Image(systemName: "checkmark")
-                        }
-                    }
-                }
-                .buttonStyle(.glassProminent)
-                .tint(.accent)
+                .padding()
             }
-            .padding()
         }
         .padding()
     }
